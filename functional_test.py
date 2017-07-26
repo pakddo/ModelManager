@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
+import time
 
 class NewVisitorTest(unittest.TestCase):
     def setUp(self):
@@ -20,21 +21,41 @@ class NewVisitorTest(unittest.TestCase):
 
         #add something
         inputbox = self.browser.find_element_by_id('id_new_item')
-        self.assertEqual(
-            inputbox.get_attribute('placeholder'),
-            'Add work item'
-        )
+        # self.assertEqual(
+        #     inputbox.get_attribute('placeholder'),
+        #     'Enter a project item'
+        # )
 
         inputbox.send_keys('Recommend Model Making')
 
-        inputbox.send_keys('Keys.ENTER')
+        inputbox.send_keys(Keys.ENTER)
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: Recommend Model Making' for row in rows),
-            "No new item in table"
-        )
+        # self.assertTrue(
+        #     any(row.text == '1: Recommend Model Making' for row in rows),
+        #     "No new item in table -- TEST TEXT:\n%s" % (
+        #         table.text,
+        #     )
+        # )
+        self.assertIn('1: Recommend Model Making', [row.text for row in rows])
+
+
+        #add something
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        # self.assertEqual(
+        #     inputbox.get_attribute('placeholder'),
+        #     'Enter a project item'
+        # )
+
+        inputbox.send_keys('Making service using Recommend Model')
+
+        inputbox.send_keys(Keys.ENTER)
+
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Recommend Model Making', [row.text for row in rows])
+        self.assertIn('2: Making service using Recommend Model', [row.text for row in rows])
 
         self.fail('Finish the test!')
 
