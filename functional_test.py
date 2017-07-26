@@ -33,6 +33,7 @@ class NewVisitorTest(unittest.TestCase):
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
             any(row.text == '1: Recommend Model Making' for row in rows),
+            "No new item in table"
         )
 
         self.fail('Finish the test!')
