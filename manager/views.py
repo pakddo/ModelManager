@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.http import HttpResponse
 
 def home_page(request):
-    return HttpResponse('<html><title>Project lists</title></html>')
+    return render(request, 'home.html')

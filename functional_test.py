@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -11,7 +12,29 @@ class NewVisitorTest(unittest.TestCase):
 
     def test_can_start_a_list_and_retrive_it_later(self):
         self.browser.get('http://127.0.0.1:8000')
+
+        # title & header
         self.assertIn ('Project', self.browser.title)
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('Project', header_text)
+
+        #add something
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(
+            inputbox.get_attribute('placeholder'),
+            'Add work item'
+        )
+
+        inputbox.send_keys('Recommend Model Making')
+
+        inputbox.send_keys('Keys.ENTER')
+
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(
+            any(row.text == '1: Recommend Model Making' for row in rows),
+        )
+
         self.fail('Finish the test!')
 
 if __name__ == '__main__':
