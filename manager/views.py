@@ -3,8 +3,25 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic.edit import CreateView
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+
+def validate_username(request):
+    username = request.GET.get('username', None)
+    data = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    if data['is_taken']:
+        data['error_message'] = 'A user with this username already exists.'
+    return JsonResponse(data)
 
 def home_page(request):
     return render(request, 'home.html', {
         'new_item_text': request.POST.get('item_text', ''),
     })
+
+class SignUpView(CreateView):
+    template_name = 'signup.html'
+    form_class = UserCreationForm

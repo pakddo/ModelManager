@@ -7,8 +7,9 @@ from django.utils import timezone
 class Project(models.Model):
     author = models.ForeignKey('auth.User')
     title = models.CharField(max_length=200)
+    text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
-    description = models.TextField()
+
 
 class Model(models.Model):
     project = models.ForeignKey(Project)
@@ -25,3 +26,7 @@ class Model(models.Model):
 
     def __str__(self):
         return self.title
+
+class Item(models.Model):
+    text = models.TextField(default='')
+    pass
