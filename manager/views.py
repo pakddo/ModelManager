@@ -8,6 +8,8 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 
+from manager.models import Item
+
 def validate_username(request):
     username = request.GET.get('username', None)
     data = {
@@ -18,8 +20,12 @@ def validate_username(request):
     return JsonResponse(data)
 
 def home_page(request):
+    item = Item()
+    item.text = request.POST.get('item_text', '')
+    item.save()
+
     return render(request, 'home.html', {
-        'new_item_text': request.POST.get('item_text', ''),
+        'new_item_text': item.text,
     })
 
 class SignUpView(CreateView):

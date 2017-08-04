@@ -4,39 +4,38 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import resolve
 from django.test import TestCase
 from django.http import HttpRequest
-from django.template.loader import render_to_string
+from django.shortcuts import render
 
 from manager.views import home_page
 from manager.models import Item
 
 
-class SmokeTest(TestCase):
+class HomePageTest(TestCase):
+
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')
         self.assertEqual(found.func, home_page)
 
-    # def test_home_page_returns_correct_html(self):
-    #     request = HttpRequest()
-    #     response = home_page(request)
-    #     expected_html = render_to_string('home.html')
-    #     self.assertEqual(response.content.decode(), expected_html)
 
-    # def test_home_page_can_save_a_POST_request(self):
-    #     request = HttpRequest()
-    #     request.method ='POST'
-    #     request.POST['item_text'] = 'new working item'
-    #
-    #     response = home_page(request)
-    #
-    #     self.assertIn('new working item', response.content.decode())
-    #     expected_html = render_to_string(
-    #         'home.html',
-    #         {'new_item_text': 'new working item'}
-    #     )
-    #     self.assertEqual(response.content.decode(), expected_html)
+    def test_home_page_returns_correct_html(self):
+        request = HttpRequest()
+        response = home_page(request)
+        html = response.content.decode('utf8')
+        self.assertTrue(html.startswith('<html>'))
+        self.assertIn('<title>To-Do lists</title>', html)
+        self.assertTrue(html.endswith('</html>'))
+
+    def test_can_save_a_POST_request(self):
+        self.client.post('/', data={'item_text': 'A new list item'})
+
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, 'A new list item')
+
 
 class ProjectModelTest(TestCase):
     def test_saving_and_retrieving_items(self):
+
         first_item = Item()
         first_item.text = 'first item'
         first_item.save()
