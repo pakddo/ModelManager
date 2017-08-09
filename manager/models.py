@@ -21,14 +21,3 @@ class Model(models.Model):
     accuracy = models.FloatField(default=0.0)
     created_date = models.DateTimeField(default=timezone.now)
     trained_date = models.DateTimeField(blank=True, null=True)
-
-    def archive(self):
-        self.trained_date = timezone.now()
-        self.save()
-
-    def __str__(self):
-        return self.title
-
-class Item(models.Model):
-    text = models.TextField(default='')
-    pass

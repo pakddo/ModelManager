@@ -3,23 +3,33 @@
 {% block title %}ModelManager - Project List{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <h2>Project List <button class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;New Project</button></h2>
-</div>
+<div class="container">
+  <div class="row">
+      <div class="col-lg-12">
+        <div class="page-header">
+          <h2>Project List</h2>
+          {% if user.is_authenticated %}
+          <a href="/project/new/" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;New Project</a>
+          {% endif %}
+        </div>
 
-  {% for list in "1234" %}
-      <div class="media well">
-        <div class="media-left">
-          <span class="glyphicon glyphicon-folder-close media-object" style="font-size:40px;width:40px"></span>
-        </div>
-        <div class="media-body">
-          <h4 class="media-heading">Project {{ list }}</h4>
-          <p>
-             Created at : 2017-08-07 12:00 pm<br/>
-             Num of models : 10<br/>
-          </p>
-        </div>
+          {% for project in projects %}
+              <a href="{% url 'project_detail' pk=project.pk %}">
+                <div class="media well">
+                  <div class="media-left">
+                    <span class="glyphicon glyphicon-folder-close media-object" style="font-size:40px;width:40px"></span>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">{{ project.title }}</h4>
+                    <div>{{ project.created_date }}</div>
+                    <div>{{ project.text }}</div>
+
+                    </p>
+                  </div>
+                </div>
+              </a>
+        {% endfor %}
       </div>
-{% endfor %}
-
+  </div>
+</div>
 {% endblock %}
