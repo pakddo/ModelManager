@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+
+{% block title %}ModelManager - Project List{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h2>Project List <button class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;New Project</button></h2>
+</div>
+
+  {% for list in "1234" %}
+      <div class="media well">
+        <div class="media-left">
+          <span class="glyphicon glyphicon-folder-close media-object" style="font-size:40px;width:40px"></span>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">Project {{ list }}</h4>
+          <p>
+             Created at : 2017-08-07 12:00 pm<br/>
+             Num of models : 10<br/>
+          </p>
+        </div>
+      </div>
+{% endfor %}
+
+{% endblock %}

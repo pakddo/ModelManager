@@ -28,6 +28,9 @@ def home_page(request):
         'new_item_text': item.text,
     })
 
+def project_list(request):
+    return render(request, 'project_list.html', {})
+
 class SignUpView(CreateView):
     template_name = 'signup.html'
     form_class = UserCreationForm
